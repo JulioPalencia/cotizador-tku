@@ -18,8 +18,18 @@ html, body {
 	background-color: #F8F8F8;
 }
 
+input[type="radio"] {
+	outline: 0;
+}
+
 p {
 	color: #8D8D8D;
+}
+
+label {
+	text-transform: uppercase;
+	font-size: 12px;
+	font-weight: 800;
 }
 
 .topbar {
@@ -144,6 +154,28 @@ p {
 
 .form {
 	padding: 111px 0 40px 0;
+	button {
+		outline: 0;
+		display: block;
+		width: 100%;
+		text-align: center;
+		font-weight: 800;
+		color: #F95738;
+		font-size: 14px;
+		background-color: transparent;
+		-webkit-border-radius: 60px;
+		border-radius: 60px;
+		border: 2px solid #F95738;
+		text-transform: uppercase;
+		padding: 18px 15px;
+		-webkit-transition: all ease .3s;
+		transition: all ease .3s;
+		&:hover {
+			text-decoration: none;
+			background-color: #F95738;
+			color: #FFF;
+		}
+	}
 }
 
 .box {
@@ -154,6 +186,9 @@ p {
 	background-color: #FFF;
 	-webkit-box-shadow: 0 6px 18px rgba( #000, .05 );
 	box-shadow: 0 6px 18px rgba( #000, .05 );
+	h2 {
+		color: #F95738;
+	}
 	p {
 		&:first-child {
 			margin-top: 0;
@@ -161,8 +196,22 @@ p {
 	}
 }
 
-label {
-	text-transform: uppercase;
-	font-size: 12px;
-	font-weight: 800;
+.form-group {
+	margin-bottom: 30px;
+}
+// .form-radio {
+// 	line-height: 34px;
+// 	margin-bottom: 30px;
+// 	.label-title {
+// 		margin-right: 15px;
+// 		margin-bottom: 0;
+// 	}
+// }
+
+.radio-inline {
+	line-height: 34px;
+	vertical-align: baseline;
+	input {
+		margin-top: 10px;
+	}
 }
