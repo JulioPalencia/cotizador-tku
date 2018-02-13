@@ -51,13 +51,13 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label for="nombres">Nombres</label>
-										<input type="text" class="form-control" id="nombres" placeholder="Ingrese sus nombres">
+										<input required type="text" class="form-control" id="nombres" placeholder="Ingrese sus nombres">
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
 										<label for="apellidos">Apellidos</label>
-										<input type="text" class="form-control" id="apellidos" placeholder="Ingrese sus apellidos">
+										<input required type="text" class="form-control" id="apellidos" placeholder="Ingrese sus apellidos">
 									</div>
 								</div>
 								<div class="col-md-12">
@@ -65,8 +65,8 @@
 										<label for="fecha-de-nacimiento">Fecha de Nacimiento:</label>
 										<div class="row">
 											<div class="col-md-4">
-												<select name="dia" id="dia" class="form-control">
-													<option disabled selected>Día</option>
+												<select required name="dia" id="dia" class="form-control">
+													<option disabled selected value>Día</option>
 													<option value="1">1</option>
 													<option value="2">2</option>
 													<option value="3">3</option>
@@ -101,8 +101,8 @@
 												</select>
 											</div>
 											<div class="col-md-4">
-												<select name="mes" id="mes" class="form-control">
-													<option disabled selected>Mes</option>
+												<select required name="mes" id="mes" class="form-control">
+													<option disabled selected value>Mes</option>
 													<option value="1">Enero</option>
 													<option value="2">Febrero</option>
 													<option value="3">Marzo</option>
@@ -118,7 +118,7 @@
 												</select>
 											</div>
 											<div class="col-md-4">
-												<input type="number" class="form-control" id="anio" placeholder="Año">
+												<input required type="number" class="form-control" id="anio" placeholder="Año">
 											</div>
 										</div>
 									</div>
@@ -130,10 +130,10 @@
 									<label for="conyuge">¿Tiene Cónyuge?</label>
 									<div class="form-group">
 										<label class="radio-inline">
-											<input type="radio" name="conyuge" value="1"> Si
+											<input required type="radio" name="conyuge" value="1"> Si
 										</label>
 										<label class="radio-inline">
-											<input type="radio" name="conyuge" value="0"> No
+											<input required type="radio" name="conyuge" value="0"> No
 										</label>
 									</div>
 								</div>
@@ -143,7 +143,7 @@
 										<div class="row">
 											<div class="col-md-4">
 												<select name="dia-conyuge" id="dia-conyuge" class="form-control">
-													<option disabled selected>Día</option>
+													<option disabled selected value>Día</option>
 													<option value="1">1</option>
 													<option value="2">2</option>
 													<option value="3">3</option>
@@ -179,7 +179,7 @@
 											</div>
 											<div class="col-md-4">
 												<select name="mes-conyuge" id="mes-conyuge" class="form-control">
-													<option disabled selected>Mes</option>
+													<option disabled selected value>Mes</option>
 													<option value="1">Enero</option>
 													<option value="2">Febrero</option>
 													<option value="3">Marzo</option>
@@ -195,7 +195,7 @@
 												</select>
 											</div>
 											<div class="col-md-4">
-												<input type="number" class="form-control" id="anio-coyuge" placeholder="Año">
+												<input type="number" class="form-control" id="anio-conyuge" placeholder="Año">
 											</div>
 										</div>
 									</div>
@@ -223,7 +223,7 @@
 							</div>
 							<div class="row">
 								<div class="col-md-6 col-md-push-3">
-									<button type="submit">Realizar Cotización</button>
+									<button name="submit" type="submit">Realizar Cotización</button>
 								</div>
 							</div>
 						</form>
