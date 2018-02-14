@@ -16,6 +16,6 @@ Los campos necesarios que el usuario tiene que llenar son los siguientes:
 - Apellidos
 - Fecha de Nacimiento
 - ¿Tiene Cónyuge?
-- Si la respuesta es "Si" el sistema le pedirá la fecha de nacimiento de su cónyuge
+	- Si la respuesta es "Si" el sistema le pedirá la fecha de nacimiento de su cónyuge
 - ¿Tiene Hijos?
-- Si la respuesta es "Si" el sistema le pedirá la cantidad de hijos menores de 21 años
+	- Si la respuesta es "Si" el sistema le pedirá la cantidad de hijos menores de 21 años
