@@ -21,3 +21,9 @@ Los campos necesarios que el usuario tiene que llenar son los siguientes:
 	- Si la respuesta es "Si" el sistema le pedirá la cantidad de hijos menores de 21 años
 
 Los recargos que se calculan dependen de la edad del asegurado, la edad del cónyuge(si aplica) y la cantidad de hijos menores de 21 años(si aplica). [Ver todos los recargos](https://github.com/isabelgg22/proyecto#requisitos)
+
+## Puntos Extras:
+
+- Se trabajo con un formulario HTML y se calculan los recargos sin recargar la pagina
+- Se agrego CSS para se vea como un sitio formal de una empresa de seguros real
+- Se puede imprimir la cotización del seguro cuando ya se lleno el formulario
