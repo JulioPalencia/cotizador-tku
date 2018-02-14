@@ -19,3 +19,5 @@ Los campos necesarios que el usuario tiene que llenar son los siguientes:
 	- Si la respuesta es "Si" el sistema le pedirá la fecha de nacimiento de su cónyuge
 - ¿Tiene Hijos?
 	- Si la respuesta es "Si" el sistema le pedirá la cantidad de hijos menores de 21 años
+
+Los recargos que se calculan dependen de la edad del asegurado, la edad del cónyuge(si aplica) y la cantidad de hijos menores de 21 años(si aplica). [Ver todos los recargos](https://github.com/isabelgg22/proyecto#requisitos)
