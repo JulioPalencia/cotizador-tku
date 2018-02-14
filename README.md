@@ -1,6 +1,6 @@
 # Cotizador Automático para la empresa TK-U
 
-[Ver en linea](https://juliopalencia.github.io/cotizador-tku/)
+[Ver demostración](https://juliopalencia.github.io/cotizador-tku/)
 
 ## Desarrollado por:
 
