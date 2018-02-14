@@ -1,4 +1,7 @@
-# [Cotizador Automático para la empresa TK-U](https://juliopalencia.github.io/cotizador-tku/)
+# Cotizador Automático para la empresa TK-U
+
+[Ver en linea](https://juliopalencia.github.io/cotizador-tku/)
+
 ## Desarrollado por:
 
 **Nombre:** Julio César Palencia Catalán
