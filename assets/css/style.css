@@ -27,6 +27,14 @@ p {
   color: #8D8D8D;
 }
 
+h2 {
+  color: #F95738;
+}
+
+h2:first-child {
+  margin-top: 0;
+}
+
 label {
   text-transform: uppercase;
   font-size: 12px;
@@ -169,10 +177,10 @@ label {
 }
 
 .form {
-  padding: 111px 0 40px 0;
+  padding: 111px 0 250px 0;
 }
 
-.form button {
+.button-sm {
   outline: 0;
   display: block;
   width: 100%;
@@ -190,7 +198,7 @@ label {
   transition: all ease .3s;
 }
 
-.form button:hover {
+.button-sm:hover {
   text-decoration: none;
   background-color: #F95738;
   color: #FFF;
@@ -206,8 +214,8 @@ label {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
 }
 
-.box h2 {
-  color: #F95738;
+.box--noPadding {
+  padding: 0;
 }
 
 .box p:first-child {
@@ -225,4 +233,96 @@ label {
 
 .radio-inline input {
   margin-top: 10px;
+}
+
+.table {
+  display: table;
+  width: 100%;
+  font-size: 14px;
+}
+
+.table .table-row {
+  display: table-row;
+}
+
+.table .table-row:first-child .table-cell {
+  border-top: 0;
+}
+
+.table .table-cell {
+  display: table-cell;
+  vertical-align: middle;
+  padding: 10px 20px;
+  border-top: 1px solid #C9C9C9;
+}
+
+.table .table-cell p {
+  margin-bottom: 0;
+}
+
+.table.table--info .table-cell {
+  width: 50%;
+}
+
+.table.table--info .table-cell:first-child {
+  padding-right: 10px;
+}
+
+.table.table--info .table-cell:last-child {
+  padding-left: 10px;
+}
+
+.table.table--info .table-cell:last-child p {
+  color: #747474;
+  font-weight: 600;
+}
+
+.table.table--price .table-cell:first-child {
+  width: 70%;
+}
+
+.table.table--price .table-cell:last-child {
+  width: 30%;
+  text-align: center;
+}
+
+.table.table--price .table-cell:last-child p {
+  color: #747474;
+  font-weight: 600;
+}
+
+.table.table--price .table-row.total {
+  font-size: 16px;
+}
+
+.table.table--price .table-row.total .table-cell:first-child p {
+  font-weight: 600;
+  color: #747474;
+}
+
+.table.table--price .table-row.total .table-cell:last-child p {
+  font-weight: 800;
+  color: #F95738;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.buttons-group {
+  margin-top: 40px;
+}
+
+@media print {
+  .form {
+    padding: 0;
+  }
+  .header, .header-fixed, .button-sm {
+    display: none;
+  }
+}
+
+@page {
+  size: 220mm 280mm;
+  margin: 1.5cm 3cm;
 }

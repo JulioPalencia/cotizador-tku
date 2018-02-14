@@ -1,56 +1,18 @@
 // Variables Globales
 var doc = document,
-form = doc.getElementById( 'form' );
+form = doc.getElementById( 'form' ),
+buttonPrint = doc.getElementById( 'imprimir' ),
+comision = 0,
+totalPagar = 0,
+_recargoEdad = 0,
+_recargoConyuge = 0,
+_recargoHijos = 0,
+_recargoTotal = 0;
 
-// Evento que detecta cuando se da click en el boton 'type="submit"'
-form.addEventListener( 'submit', function( event ) {
-	// La funcion preventDefault() evita que el formulario se envie, en este caso
-	// la utilizamos porque no queremos enviado informacion a ninguna DB ya
-	// que nuestro programa corre del lado del cliente
-	event.preventDefault();
+const precioBase = 250;
 
-	// Mostrando los datos en consola
-	console.log( datos().nombres );
-	console.log( datos().apellidos );
-	console.log( datos().nacimiento );
-	console.log( datos().edad );
-	console.log( datos().conyuge );
-	console.log( datos().nacimientoConyuge );
-	console.log( datos().edadConyuge );
-})
-
-// Funcion que retorna todos los datos del usuario
-function datos() {
-	// Variables con los datos del usuario
-	var _nombres = doc.getElementById( 'nombres' ).value,
-	_apellidos = doc.getElementById( 'apellidos' ).value,
-	_dia = doc.getElementById( 'dia' ),
-	_mes = doc.getElementById( 'mes' ),
-	_anio = doc.getElementById( 'anio' ).value,
-	_nacimiento = _anio + '-' + _mes.options[_mes.selectedIndex].value + '-' + _dia.options[_dia.selectedIndex].value,
-	_edad = obtenerEdad( _nacimiento ),
-	_conyuge = doc.querySelector( 'input[name="conyuge"]:checked' ),
-	_diaCon = doc.getElementById( 'dia-conyuge' ),
-	_mesCon = doc.getElementById( 'mes-conyuge' ),
-	_anioCon = doc.getElementById( 'anio-conyuge' ).value,
-	_nacimientoCon = _anioCon + '-' + _mesCon.options[_mesCon.selectedIndex].value + '-' + _diaCon.options[_diaCon.selectedIndex].value,
-	_edadCon = obtenerEdad( _nacimientoCon );
-
-	// Validando input[type="radio"]
-	_conyuge = _conyuge != null ? _conyuge.value : 0;
-	_conyuge = _conyuge == '1' ? true : false;
-
-	// Retornando todos los datos ordenados
-	return {
-		nombres: _nombres,
-		apellidos: _apellidos,
-		nacimiento: _nacimiento,
-		edad: _edad,
-		conyuge: _conyuge,
-		nacimientoConyuge: _nacimientoCon,
-		edadConyuge: _edadCon
-	};
-}
+// Calculando la comision
+comision = precioBase * 0.30;
 
 // Funcion para obtener edad segun la fecha de nacimiento, recibe los siguientes
 // parametros: El parametro 'fecha' debe ser un string con la fecha en
@@ -69,6 +31,120 @@ function obtenerEdad( fecha ) {
 	return Math.floor( ( Date.now() - fechaNacimiento ) / ( 31557600000 ) );
 }
 
+// Funcion para obtener y retorna todos los datos que el usuario coloco
+// en el formulario
+function datos() {
+	// Variables para obtener los datos del formulario
+	var _nombres = doc.getElementById( 'nombres' ).value,
+	_apellidos = doc.getElementById( 'apellidos' ).value,
+	_dia = doc.getElementById( 'dia' ),
+	_mes = doc.getElementById( 'mes' ),
+	_anio = doc.getElementById( 'anio' ).value,
+	_nacimiento = _anio + '-' + _mes.options[_mes.selectedIndex].value + '-' + _dia.options[_dia.selectedIndex].value,
+	_edad = obtenerEdad( _nacimiento ),
+	_conyuge = doc.querySelector( 'input[name="conyuge"]:checked' ),
+	_diaCon = doc.getElementById( 'dia-conyuge' ),
+	_mesCon = doc.getElementById( 'mes-conyuge' ),
+	_anioCon = doc.getElementById( 'anio-conyuge' ).value,
+	_nacimientoCon = _anioCon + '-' + _mesCon.options[_mesCon.selectedIndex].value + '-' + _diaCon.options[_diaCon.selectedIndex].value,
+	_edadCon = obtenerEdad( _nacimientoCon ),
+	_hijos = doc.querySelector( 'input[name="hijos"]:checked' ),
+	_cantHijos = doc.getElementById( 'cantidad-hijos' ).value;
+
+	// Validando input[type="radio"]
+	_conyuge = _conyuge != null ? _conyuge.value : 0;
+	_conyuge = _conyuge == '1' ? true : false;
+	_hijos = _hijos != null ? _hijos.value : 0;
+	_hijos = _hijos == '1' ? true : false;
+
+	// Validando los campos ocultos y mostrando 'N/A' si no aplica
+	_nacimientoCon = !_conyuge ? 'N/A' : _nacimientoCon;
+	_edadCon = !_conyuge ? 'N/A' : _edadCon;
+	_cantHijos = !_hijos ? 'N/A' : parseInt( _cantHijos );
+
+	// Retornando todos los datos ordenados
+	return {
+		nombres: _nombres,
+		apellidos: _apellidos,
+		nacimiento: _nacimiento,
+		edad: _edad,
+		conyuge: _conyuge,
+		nacimientoConyuge: _nacimientoCon,
+		edadConyuge: _edadCon,
+		hijos: _hijos,
+		cantidadHijos: _cantHijos
+	};
+}
+
+// Función para obtener el porcentaje del recargo por edad, recibe los siguientes
+// parametros: El parametro 'datos' debe ser un arreglo con los datos del
+// formulario
+function recargoEdad( datos ) {
+	if ( datos.edad < 18 ) {
+		return false;
+	} else if( datos.edad >= 18 && datos.edad < 21 ) {
+		return precioBase * 0;
+	} else if( datos.edad >= 21 && datos.edad < 25 ) {
+		return precioBase * 0.01;
+	} else if( datos.edad >= 25 && datos.edad < 30  ) {
+		return precioBase * 0.02;
+	} else if( datos.edad >= 30 && datos.edad < 40 ) {
+		return precioBase * 0.05;
+	} else if( datos.edad >= 40 && datos.edad < 50 ) {
+		return precioBase * 0.08;
+	} else if( datos.edad >= 50 && datos.edad < 65 ) {
+		return precioBase * 0.12;
+	} else {
+		return false;
+	}
+}
+
+// Función para obtener el porcentaje del recargo por edad del conyuge, recibe
+// los siguientes parametros: El parametro 'datos' debe ser un arreglo con los
+// datos del formulario
+function recargoEdadConyuge( datos ) {
+	if ( datos.conyuge ) {
+		if ( datos.edadConyuge < 30 ) {
+			return precioBase * 0.01;
+		} else if( datos.edadConyuge >= 30 && datos.edadConyuge < 40 ) {
+			return precioBase * 0.02;
+		} else if( datos.edadConyuge >= 40 && datos.edadConyuge < 50 ) {
+			return precioBase * 0.03;
+		} else if( datos.edadConyuge >= 50 && datos.edadConyuge < 70 ) {
+			return precioBase * 0.05;
+		} else {
+			return false;
+		}
+	} else {
+		return false;
+	}
+}
+
+// Función para obtener el porcentaje del recargo cor cantidad de hijos, recibe
+// los siguientes parametros: El parametro 'datos' debe ser un arreglo con los
+// datos del formulario
+function recargoHijos( datos ) {
+	if ( datos.hijos ) {
+		return precioBase * ( datos.cantidadHijos / 100 );
+	} else {
+		return false;
+	}
+}
+
+// Función para calcular el recargo total que se cobrara
+function recargoTotal( edad, conyuge, hijos ) {
+	var recargoTotal = 0;
+	if ( edad != false ) {
+		recargoTotal = recargoTotal + edad;
+	}
+	if ( conyuge != false ) {
+		recargoTotal = recargoTotal + conyuge;
+	}
+	if ( hijos != false ) {
+		recargoTotal = recargoTotal + hijos;
+	}
+	return recargoTotal;
+}
 
 // Funcion para hacer un bucle y repetir el evento 'change' en cada uno de los
 // inputs para mostrar u ocultar campos extras, recibe los siguientes
@@ -105,14 +181,114 @@ function mostrarCamposExtras( obj, id ) {
 	});
 }
 
-// -------------------------------------------------------------------------
-// Oculta o Muestra los campos extras con la funcion mostrarCamposExtras( obj, id );
-// -------------------------------------------------------------------------
+// Función para mostrar y ocultar el desglose, recibe los siguientes parametros:
+// El parametro 'show' es un booleano que si es true muestra el desglose y oculta
+// el formulario y si es false muestra el formulario y oculta el desglose
+function mostarDesglose( show ) {
+	var datos = doc.getElementById( 'datos' ),
+	desglose = doc.getElementById( 'desglose' );
+
+	if ( show ) {
+		datos.style.display = 'none';
+		desglose.style.display = 'block';
+	} else {
+		datos.style.display = 'block';
+		desglose.style.display = 'none';
+	}
+}
+
+function imprimirDesglose( datos ) {
+	// Variables de los elementos HTML para imprimir el desglose
+	var infoNombre = doc.getElementById( 'info-nombre' ),
+	infoEdad = doc.getElementById( 'info-edad' ),
+	infoConyuge = doc.getElementById( 'info-conyuge' ),
+	infoEdadConyuge = doc.getElementById( 'info-edad-conyuge' ),
+	infoHijos = doc.getElementById( 'info-hijos' ),
+	infoCantidadHijos = doc.getElementById( 'info-cantidad-hijos' ),
+	infoRecargoEdad = doc.getElementById( 'recargo-edad' ),
+	infoRecargoConyuge = doc.getElementById( 'recargo-conyuge' ),
+	infoRecargoHijos = doc.getElementById( 'recargo-hijos' ),
+	infoRecargoComision = doc.getElementById( 'comision' ),
+	infoPrecioBase = doc.getElementById( 'precio-base' ),
+	infoCargos = doc.getElementById( 'cargos' ),
+	infoTotalPagar = doc.getElementById( 'total-pagar' ),
+
+	rowConyuge = doc.getElementById( 'row-edad-conyuge' ),
+	rowRecargoConyuge = doc.getElementById( 'row-recargo-conyuge' ),
+	rowHijos = doc.getElementById( 'row-cantidad-hijos' ),
+	rowRecargoHijos = doc.getElementById( 'row-recargo-hijos' );
+
+	// Ocultamos las opciones que no aplican en el desglose
+	if ( !datos.conyuge ) {
+		rowConyuge.style.display = 'none';
+		rowRecargoConyuge.style.display = 'none';
+	} else {
+		rowConyuge.style.display = 'table-row';
+		rowRecargoConyuge.style.display = 'table-row';
+	}
+
+	if ( !datos.hijos ) {
+		rowHijos.style.display = 'none';
+		rowRecargoHijos.style.display = 'none';
+	} else {
+		rowHijos.style.display = 'table-row';
+		rowRecargoHijos.style.display = 'table-row';
+	}
+
+	infoNombre.innerHTML = '<p>' + datos.nombres + ' ' + datos.apellidos + '</p>';
+	infoEdad.innerHTML = '<p>' + datos.edad + ' años</p>';
+	infoConyuge.innerHTML = '<p>' + ( datos.conyuge ? 'Si' : 'No' ) + '</p>';
+	infoEdadConyuge.innerHTML = '<p>' + datos.edadConyuge + ' años</p>';
+	infoHijos.innerHTML = '<p>' + ( datos.hijos ? 'Si' : 'No' ) + '</p>';
+	infoCantidadHijos.innerHTML = '<p>' + datos.cantidadHijos + '</p>';
+
+
+	infoRecargoEdad.innerHTML = '<p>Q. ' + _recargoEdad.toFixed( 2 ) + '</p>';
+	infoRecargoConyuge.innerHTML = '<p>' + ( _recargoConyuge ? 'Q. ' + _recargoConyuge.toFixed( 2 ) : 'N/A' ) + '</p>';
+	infoRecargoHijos.innerHTML = '<p>' + ( _recargoHijos ? 'Q. ' + _recargoHijos.toFixed( 2 ) : 'N/A' ) + '</p>';
+	infoRecargoComision.innerHTML = '<p>Q. ' + comision.toFixed( 2 ) + '</p>';
+
+	infoPrecioBase.innerHTML = '<p>Q. ' + precioBase.toFixed( 2 ) + '</p>';
+	infoCargos.innerHTML = '<p>Q. ' + ( _recargoTotal + comision ).toFixed( 2 ) + '</p>';
+	infoTotalPagar.innerHTML = '<p>Q. ' + totalPagar.toFixed( 2 ) + '</p>';
+}
+
 // Las siguientes variables retornan una lista de nodos con varios elementos,
 // en este caso son los dos input[type="radio"] de las opciones 'Si' ó 'No'
 // de los campos de cónyuge e hijos
-var tieneConyuge = document.querySelectorAll( 'input[name="conyuge"]' ),
-tieneHijos = document.querySelectorAll( 'input[name="hijos"]' );
+var tieneConyuge = doc.querySelectorAll( 'input[name="conyuge"]' ),
+tieneHijos = doc.querySelectorAll( 'input[name="hijos"]' );
 
+// Oculta o muestra los campos extras con la funcion mostrarCamposExtras( obj, id );
 mostrarCamposExtras( tieneConyuge, 'fecha-conyuge-input' );
 mostrarCamposExtras( tieneHijos, 'cantidad-hijos-input' );
+
+// Evento que detecta cuando se da click en el boton 'type="submit"'
+form.addEventListener( 'submit', function( event ) {
+	// La funcion preventDefault() evita que el formulario se envie, en este caso
+	// la utilizamos porque no queremos enviado informacion a ninguna DB ya
+	// que nuestro programa corre del lado del cliente
+	event.preventDefault();
+
+	// Variable para guardar la funcion datos() y no hacer el llamado varias veces
+	var datosUsuario = datos();
+
+	// Modificando las variables globales
+	_recargoEdad = recargoEdad( datosUsuario );
+	_recargoConyuge = recargoEdadConyuge( datosUsuario );
+	_recargoHijos = recargoHijos( datosUsuario );
+	_recargoTotal = recargoTotal( _recargoEdad, _recargoConyuge, _recargoHijos );
+	totalPagar = precioBase + _recargoTotal + comision;
+
+	// Oculta o muestra el desglose
+	mostarDesglose( true );
+
+	// Imprimiendo los datos en el desglose
+	imprimirDesglose( datosUsuario );
+});
+
+buttonPrint.addEventListener( 'click', function( event ) {
+	event.preventDefault();
+
+	window.print();
+});

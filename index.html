@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<title>TK-U Cotizador</title>
 	<!-- LINKS -->
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,800">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,600,800">
 	<link rel="stylesheet" href="assets/css/bootstrap.css">
 	<link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -43,7 +43,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-8 col-md-push-2">
-					<div class="box">
+					<div class="box" id="datos">
 						<p>Para realizar una cotización, por favor rellene los siguientes campos</p>
 						<form action="#" method="POST" id="form">
 							<h2>Datos del Asegurado Principal</h2>
@@ -118,7 +118,7 @@
 												</select>
 											</div>
 											<div class="col-md-4">
-												<input required type="number" class="form-control" id="anio" placeholder="Año">
+												<input required type="number" class="form-control" id="anio" placeholder="Año" pattern="\d+">
 											</div>
 										</div>
 									</div>
@@ -195,7 +195,7 @@
 												</select>
 											</div>
 											<div class="col-md-4">
-												<input type="number" class="form-control" id="anio-conyuge" placeholder="Año">
+												<input type="number" class="form-control" id="anio-conyuge" placeholder="Año" pattern="\d+">
 											</div>
 										</div>
 									</div>
@@ -207,91 +207,103 @@
 									<label for="hijos">¿Tiene Hijos?</label>
 									<div class="form-group">
 										<label class="radio-inline">
-											<input type="radio" name="hijos" value="1"> Si
+											<input required type="radio" name="hijos" value="1"> Si
 										</label>
 										<label class="radio-inline">
-											<input type="radio" name="hijos" value="0"> No
+											<input required type="radio" name="hijos" value="0"> No
 										</label>
 									</div>
 								</div>
 								<div class="col-md-8" id="cantidad-hijos-input" style="display: none;">
 									<div class="form-group">
 										<label for="cantidad-hijos">¿Cuantos hijos menores de 21 años?</label>
-										<input type="number" class="form-control" id="cantidad-hijos" placeholder="Cantidad de Hijos">
+										<input type="number" class="form-control" id="cantidad-hijos" placeholder="Cantidad de Hijos" pattern="\d+">
 									</div>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-md-6 col-md-push-3">
-									<button name="submit" type="submit">Realizar Cotización</button>
+									<button class="button-sm" name="submit" type="submit">Realizar Cotización</button>
 								</div>
 							</div>
 						</form>
 					</div>
+					<div id="desglose" style="display: none;">
+						<h2 class="text-center">Información del Asegurado</h2>
+						<div class="box box--noPadding">
+							<div class="table table--info">
+								<div class="table-row">
+									<div class="table-cell"><p>Nombre:</p></div>
+									<div class="table-cell" id="info-nombre"></div>
+								</div>
+								<div class="table-row">
+									<div class="table-cell"><p>Edad:</p></div>
+									<div class="table-cell" id="info-edad"></div>
+								</div>
+								<div class="table-row">
+									<div class="table-cell"><p>¿Tiene Cónyuge?</p></div>
+									<div class="table-cell" id="info-conyuge"></div>
+								</div>
+								<div class="table-row" id="row-edad-conyuge">
+									<div class="table-cell"><p>Edad del Cónyuge:</p></div>
+									<div class="table-cell" id="info-edad-conyuge"></div>
+								</div>
+								<div class="table-row">
+									<div class="table-cell"><p>¿Tiene Hijos?</p></div>
+									<div class="table-cell" id="info-hijos"></div>
+								</div>
+								<div class="table-row" id="row-cantidad-hijos">
+									<div class="table-cell"><p>Hijos menores de 21 años</p></div>
+									<div class="table-cell" id="info-cantidad-hijos"></div>
+								</div>
+							</div>
+						</div>
+						<h2 class="text-center">Cargos Aplicados</h2>
+						<div class="box box--noPadding">
+							<div class="table table--price">
+								<div class="table-row">
+									<div class="table-cell"><p>Recargo por Edad:</p></div>
+									<div class="table-cell" id="recargo-edad"></div>
+								</div>
+								<div class="table-row" id="row-recargo-conyuge">
+									<div class="table-cell"><p>Recargo por Cónyuge:</p></div>
+									<div class="table-cell" id="recargo-conyuge"></div>
+								</div>
+								<div class="table-row" id="row-recargo-hijos">
+									<div class="table-cell"><p>Recargo por Hijos:</p></div>
+									<div class="table-cell" id="recargo-hijos"></div>
+								</div>
+								<div class="table-row">
+									<div class="table-cell"><p>Comisión:</p></div>
+									<div class="table-cell" id="comision"></div>
+								</div>
+							</div>
+						</div>
+						<h2 class="text-center">Total a Pagar</h2>
+						<div class="box box--noPadding">
+							<div class="table table--price">
+								<div class="table-row">
+									<div class="table-cell"><p>Precio Base:</p></div>
+									<div class="table-cell" id="precio-base"></div>
+								</div>
+								<div class="table-row">
+									<div class="table-cell"><p>Cargos:</p></div>
+									<div class="table-cell" id="cargos"></div>
+								</div>
+								<div class="table-row total">
+									<div class="table-cell"><p>Total a Pagar:</p></div>
+									<div class="table-cell" id="total-pagar"></div>
+								</div>
+							</div>
+						</div>
+						<div class="row buttons-group">
+							<div class="col-md-4 col-md-push-4">
+								<button id="imprimir" class="button-sm">Imprimir</button>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="brs">
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
 		</div>
 	</div>
 
