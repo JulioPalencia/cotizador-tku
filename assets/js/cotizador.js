@@ -2,6 +2,8 @@
 var doc = document,
 form = doc.getElementById( 'form' ),
 buttonPrint = doc.getElementById( 'imprimir' ),
+popup = doc.getElementById( 'popup' ),
+desglose = doc.getElementById( 'desglose' ),
 comision = 0,
 totalPagar = 0,
 _recargoEdad = 0,
@@ -184,9 +186,8 @@ function mostrarCamposExtras( obj, id ) {
 // Función para mostrar y ocultar el desglose, recibe los siguientes parametros:
 // El parametro 'show' es un booleano que si es true muestra el desglose y oculta
 // el formulario y si es false muestra el formulario y oculta el desglose
-function mostarDesglose( show ) {
-	var datos = doc.getElementById( 'datos' ),
-	desglose = doc.getElementById( 'desglose' );
+function mostrarDesglose( show ) {
+	var datos = doc.getElementById( 'datos' );
 
 	if ( show ) {
 		datos.style.display = 'none';
@@ -197,6 +198,9 @@ function mostarDesglose( show ) {
 	}
 }
 
+// Funcion que imprimir los datos y el desglose de los recargos en HTML, recibe
+// los siguientes parametros: El parametros 'datos' es un arreglo con los datos
+// del formulario
 function imprimirDesglose( datos ) {
 	// Variables de los elementos HTML para imprimir el desglose
 	var infoNombre = doc.getElementById( 'info-nombre' ),
@@ -253,6 +257,17 @@ function imprimirDesglose( datos ) {
 	infoTotalPagar.innerHTML = '<p>Q. ' + totalPagar.toFixed( 2 ) + '</p>';
 }
 
+// Funcion para mostrar la ventana emergente, recibe los siguientes parametros:
+// El parametro 'tiempo' es un numero en milisegundos, que es el tiempo el cual
+// se tardara en ocultar el popup
+function mostrarPopup( tiempo ) {
+	popup.style.display = 'block';
+
+	setTimeout( function() {
+		popup.style.display = 'none';
+	}, tiempo);
+}
+
 // Las siguientes variables retornan una lista de nodos con varios elementos,
 // en este caso son los dos input[type="radio"] de las opciones 'Si' ó 'No'
 // de los campos de cónyuge e hijos
@@ -280,15 +295,33 @@ form.addEventListener( 'submit', function( event ) {
 	_recargoTotal = recargoTotal( _recargoEdad, _recargoConyuge, _recargoHijos );
 	totalPagar = precioBase + _recargoTotal + comision;
 
-	// Oculta o muestra el desglose
-	mostarDesglose( true );
-
-	// Imprimiendo los datos en el desglose
-	imprimirDesglose( datosUsuario );
+	// Validamos si el usuario es mayor de 18 años y menor de 66
+	if ( datosUsuario.edad >= 18 && datosUsuario.edad <= 65 ) {
+		// Oculta o muestra el desglose
+		mostrarDesglose( true );
+		// Imprimiendo los datos en el desglose
+		imprimirDesglose( datosUsuario );
+	} else if( datosUsuario.edad < 18 ) {
+		// Si es menor de 18 años, imprimimos en el popup 'menor de 18 años' y
+		// mostramos el popup
+		doc.getElementById( 'popup-edad' ).innerHTML = 'menor de 18 años';
+		mostrarPopup( 5000 );
+		// Hacemos un reset del formulario para dejar en blanco los campos
+		form.reset();
+	} else {
+		// Si es mayor de 65 años, imprimimos en el popup 'mayor de 65 años' y
+		// mostramos el popup
+		doc.getElementById( 'popup-edad' ).innerHTML = 'mayor de 65 años';
+		mostrarPopup( 5000 );
+		// Hacemos un reset del formulario para dejar en blanco los campos
+		form.reset();
+	}
 });
 
+// Evento para detectar el click en el boton de imprimir
 buttonPrint.addEventListener( 'click', function( event ) {
 	event.preventDefault();
 
+	// Mostramos la opcion de imprimir
 	window.print();
 });
